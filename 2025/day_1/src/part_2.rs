@@ -41,15 +41,9 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
         match instruction {
             Direction::L(count) => {
                 if count >= current {
-                    zeros_count += 1 + (count - current) / (MAX + 1);
-
-                    // Not the perfect. But hey, it works!
-                    if current == 0 {
-                        zeros_count -= 1;
-                    }
+                    zeros_count += if current != 0 { 1 } else { 0 } + (count - current) / (MAX + 1);
                 }
 
-                // current = (current + (MAX + 1) - (count % (MAX + 1))) % (MAX + 1)
                 current = (current + (MAX + 1) - (count % (MAX + 1))) % (MAX + 1)
             }
             Direction::R(count) => {
