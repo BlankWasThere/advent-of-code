@@ -34,26 +34,26 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
             let num_vec = num.to_string().chars().collect::<Vec<_>>();
 
             // Create LPS table
-            let mut lcs = vec![0; num_vec.len()];
+            let mut lps = vec![0; num_vec.len()];
             let mut i = 1;
             let mut j = 0;
 
             while i < num_vec.len() {
                 if num_vec[i] == num_vec[j] {
                     j += 1;
-                    lcs[i] = j;
+                    lps[i] = j;
                     i += 1;
                 } else {
                     if j == 0 {
                         i += 1;
                     } else {
-                        j = lcs[j - 1];
+                        j = lps[j - 1];
                     }
                 }
             }
 
             // Find pattern length
-            let last = lcs[num_vec.len() - 1];
+            let last = lps[num_vec.len() - 1];
             let pattern_len = num_vec.len() - last;
 
             // Verification
