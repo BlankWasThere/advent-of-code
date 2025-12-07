@@ -1,4 +1,7 @@
-fn parse_input(input: &str) -> anyhow::Result<(Vec<(u64, u64)>, Vec<u64>)> {
+type Ranges = Vec<(u64, u64)>;
+type RangesInputsTuple = (Ranges, Vec<u64>);
+
+fn parse_input(input: &str) -> anyhow::Result<RangesInputsTuple> {
     let mut state = false; // false = ranges | true = values
     let mut ranges = Vec::new();
     let mut values = Vec::new();
