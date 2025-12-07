@@ -30,7 +30,6 @@ fn parse_input(input: &str) -> anyhow::Result<Problem> {
 
     // Parse remaining lines
     let values = lines
-        .into_iter()
         .map(|l| {
             l.split_whitespace()
                 .map(|s| s.parse::<u64>().map_err(Into::into))

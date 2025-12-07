@@ -24,7 +24,7 @@ fn parse_input(input: &str) -> anyhow::Result<Vec<Column>> {
         .ok_or(anyhow::anyhow!("Missing operation line."))?
         .split(' ')
         .filter_map(|s| {
-            if s != "" {
+            if !s.is_empty() {
                 // Basically push(1u8) but more idiomatic
                 lengths.push(s.len() as u8);
             }
@@ -47,10 +47,10 @@ fn parse_input(input: &str) -> anyhow::Result<Vec<Column>> {
 
     let mut columns = operations
         .into_iter()
-        .zip(lengths.into_iter())
+        .zip(lengths)
         .map(|(operation, length)| Column {
             operation,
-            length: length,
+            length,
             values: Vec::new(),
         })
         .collect::<Vec<_>>();
@@ -101,7 +101,6 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
                 .into_iter()
                 .fold(vec![None; column.length as usize], |acc, e| {
                     acc.into_iter()
-                        .map(|e| e.map(|v| v as u64))
                         .zip(e.into_iter().map(|e| e.map(|v| v as u64)))
                         .map(|(a, b)| match (a, b) {
                             (Some(a), Some(b)) => Some(a * 10 + b),
@@ -112,7 +111,7 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
                         .collect::<Vec<_>>()
                 })
                 .into_iter()
-                .filter_map(|e| if let Some(v) = e { Some(v) } else { None })
+                .flatten()
                 .reduce(|acc, e| match column.operation {
                     Operation::Multiply => acc * e,
                     Operation::Add => acc + e,
