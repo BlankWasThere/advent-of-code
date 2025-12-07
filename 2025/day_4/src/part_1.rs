@@ -1,10 +1,26 @@
-fn can_access(grid: &Vec<Vec<bool>>, target_row: usize, target_col: usize) -> bool {
+fn can_access(grid: &[Vec<bool>], target_row: usize, target_col: usize) -> bool {
     let mut nearby_rolls = 0;
 
-    for row in target_row.saturating_sub(1)..=(grid.len() - 1).min(target_row + 1) {
-        for col in target_col.saturating_sub(1)..=(grid[row].len() - 1).min(target_col + 1) {
+    let row_start = target_row.saturating_sub(1);
+    let row_end = (target_row + 1).min(grid.len() - 1);
+
+    for (row_idx, row) in grid
+        .iter()
+        .enumerate()
+        .skip(row_start)
+        .take(row_end - row_start + 1)
+    {
+        let col_start = target_col.saturating_sub(1);
+        let col_end = (target_col + 1).min(row.len() - 1);
+
+        for (col_idx, &value) in row
+            .iter()
+            .enumerate()
+            .skip(col_start)
+            .take(col_end - col_start + 1)
+        {
             // Ignore the middle (current) cell.
-            if grid[row][col] && (row != target_row || col != target_col) {
+            if value && (row_idx != target_row || col_idx != target_col) {
                 nearby_rolls += 1;
             }
         }
