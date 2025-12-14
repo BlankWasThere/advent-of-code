@@ -24,10 +24,10 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
     let points = parse_input(input)?;
 
     let mut max_area = 0;
-    for &x in &points {
-        for &y in &points {
-            if x != y {
-                max_area = max_area.max((x.0.abs_diff(y.0) + 1) * (x.1.abs_diff(y.1) + 1));
+    for point1 @ &(x1, y1) in &points {
+        for point2 @ &(x2, y2) in &points {
+            if point1 != point2 {
+                max_area = max_area.max((x1.abs_diff(x2) + 1) * (y1.abs_diff(y2) + 1));
             }
         }
     }

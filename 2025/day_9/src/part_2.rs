@@ -144,29 +144,27 @@ pub fn solve(input: &str) -> anyhow::Result<()> {
                 continue;
             }
 
-            let x1 = xs.binary_search(&x1).unwrap();
-            let y1 = ys.binary_search(&y1).unwrap();
-            let x2 = xs.binary_search(&x2).unwrap();
-            let y2 = ys.binary_search(&y2).unwrap();
+            let cx1 = xs.binary_search(&x1).unwrap();
+            let cy1 = ys.binary_search(&y1).unwrap();
+            let cx2 = xs.binary_search(&x2).unwrap();
+            let cy2 = ys.binary_search(&y2).unwrap();
 
             // Normalize the points
-            let (x1, x2) = stable_min_max!(x1, x2);
-            let (y1, y2) = stable_min_max!(y1, y2);
+            let (cx1, cx2) = stable_min_max!(cx1, cx2);
+            let (cy1, cy2) = stable_min_max!(cy1, cy2);
 
-            let c_area = (x1.abs_diff(x2) + 1) * (y1.abs_diff(y2) + 1);
-
-            let c_area_from_psa = psa[y2][x2]
-                + if x1 > 0 && y1 > 0 {
-                    psa[y1 - 1][x1 - 1]
+            let c_area = (cx1.abs_diff(cx2) + 1) * (cy1.abs_diff(cy2) + 1);
+            let c_area_from_psa = psa[cy2][cx2]
+                + if cx1 > 0 && cy1 > 0 {
+                    psa[cy1 - 1][cx1 - 1]
                 } else {
                     0
                 }
-                - if y1 > 0 { psa[y1 - 1][x2] } else { 0 }
-                - if x1 > 0 { psa[y2][x1 - 1] } else { 0 };
+                - if cy1 > 0 { psa[cy1 - 1][cx2] } else { 0 }
+                - if cx1 > 0 { psa[cy2][cx1 - 1] } else { 0 };
 
             if c_area == c_area_from_psa as usize {
-                max_area = max_area
-                    .max((point1.0.abs_diff(point2.0) + 1) * (point1.1.abs_diff(point2.1) + 1));
+                max_area = max_area.max((x1.abs_diff(x2) + 1) * (y1.abs_diff(y2) + 1));
             }
         }
     }
