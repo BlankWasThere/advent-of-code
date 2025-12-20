@@ -4,7 +4,7 @@ use std::collections::{HashSet, VecDeque};
 struct Machine {
     lights: u16,
     buttons: Vec<u16>,
-    _joltage: Vec<u16>,
+    _joltage: (),
 }
 
 fn parse_input(input: &str) -> anyhow::Result<Vec<Machine>> {
@@ -17,7 +17,7 @@ fn parse_input(input: &str) -> anyhow::Result<Vec<Machine>> {
         .map(|s| {
             let mut lights = 0;
             let mut buttons = vec![];
-            let mut _joltage = vec![];
+            let mut _joltage = ();
 
             for s in s.split_whitespace() {
                 if s.len() < 3 {
